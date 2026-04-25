@@ -1,8 +1,10 @@
 import { useCallback, useState } from 'react';
 import { View, Text, ScrollView, ActivityIndicator, Pressable } from 'react-native';
-import { useFocusEffect } from 'expo-router';
+import { useFocusEffect, useRouter } from 'expo-router';
+import type { Href } from 'expo-router';
 import { fetchDashboardStats } from '@/src/features/dashboard/api';
 import { auth } from '@/src/lib/firebase';
+import { AdBanner } from '@/src/components/BannerAd';
 import type { DashboardStats } from '@/src/features/dashboard/api';
 
 function CountdownCard({ goal }: { goal: DashboardStats['upcomingGoals'][number] }) {
@@ -93,6 +95,7 @@ function StarDisplay({ totalCount }: { totalCount: number }) {
 }
 
 export default function DashboardScreen() {
+  const router = useRouter();
   const [stats, setStats] = useState<DashboardStats | null>(null);
   const [loading, setLoading] = useState(true);
 
@@ -141,7 +144,8 @@ export default function DashboardScreen() {
   }
 
   return (
-    <ScrollView style={{ flex: 1, backgroundColor: '#f9fafb' }} contentContainerStyle={{ padding: 16, paddingBottom: 40 }}>
+    <View style={{ flex: 1, backgroundColor: '#f9fafb' }}>
+    <ScrollView contentContainerStyle={{ padding: 16, paddingBottom: 100 }}>
 
       {/* 直近ゴール カウントダウン */}
       <Text style={{ fontSize: 16, fontWeight: '700', color: '#374151', marginBottom: 12 }}>
@@ -171,6 +175,17 @@ export default function DashboardScreen() {
       </Text>
       <StarDisplay totalCount={stats.totalPracticeCount} />
 
+      {/* プレミアムへの導線 */}
+      <Pressable
+        style={{ marginTop: 24, padding: 14, borderRadius: 12, borderWidth: 1, borderColor: '#e5e7eb', alignItems: 'center' }}
+        onPress={() => router.push('/premium' as Href)}
+      >
+        <Text style={{ fontSize: 13, color: '#6b7280' }}>⭐ 広告を非表示にする</Text>
+      </Pressable>
+
     </ScrollView>
+    {/* バナー広告（下部固定） */}
+    <AdBanner fixed />
+    </View>
   );
 }

@@ -11,6 +11,9 @@ import 'react-native-reanimated';
 import { useColorScheme } from '@/components/useColorScheme';
 import { subscribeAuthState, signInAnon } from '@/src/features/auth/api';
 import { useAuthStore } from '@/src/stores/authStore';
+import { usePurchaseStore } from '@/src/stores/purchaseStore';
+import { initializeAdMob } from '@/src/lib/admob';
+import { initializePurchases, checkPremium } from '@/src/lib/purchases';
 
 export {
   ErrorBoundary,
@@ -30,6 +33,14 @@ export default function RootLayout() {
 
   const setUser = useAuthStore((s) => s.setUser);
   const setStatus = useAuthStore((s) => s.setStatus);
+  const setIsPremium = usePurchaseStore((s) => s.setIsPremium);
+
+  // AdMob・RevenueCat の初期化
+  useEffect(() => {
+    initializePurchases();
+    void initializeAdMob();
+    void checkPremium().then(setIsPremium);
+  }, [setIsPremium]);
 
   // Firebase 認証状態を購読し、未ログインなら匿名ログインを自動実行
   useEffect(() => {
@@ -84,6 +95,8 @@ function RootLayoutNav() {
         {/* 練習箇所 */}
         <Stack.Screen name="goals/[goalId]/pieces/[pieceId]/sections/new" options={{ title: '練習箇所を追加', presentation: 'modal' }} />
         <Stack.Screen name="goals/[goalId]/pieces/[pieceId]/sections/[sectionId]/index" options={{ title: '練習記録' }} />
+        {/* 課金 */}
+        <Stack.Screen name="premium" options={{ title: 'プレミアム', presentation: 'modal' }} />
       </Stack>
     </ThemeProvider>
   );

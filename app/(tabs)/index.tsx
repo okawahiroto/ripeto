@@ -3,6 +3,7 @@ import { View, Text, FlatList, Pressable, ActivityIndicator, Alert } from 'react
 import { useFocusEffect, useRouter } from 'expo-router';
 import type { Href } from 'expo-router';
 import { fetchActiveGoals, completeGoal } from '@/src/features/goals/api';
+import { AdBanner } from '@/src/components/BannerAd';
 import type { Goal } from '@/src/types/models';
 
 function daysUntil(date: Date): number {
@@ -102,7 +103,7 @@ export default function GoalsScreen() {
         data={goals}
         keyExtractor={(item) => item.id}
         renderItem={({ item }) => <GoalCard goal={item} onComplete={handleComplete} />}
-        contentContainerStyle={{ padding: 16, paddingBottom: 100 }}
+        contentContainerStyle={{ padding: 16, paddingBottom: 120 }}
         ListEmptyComponent={
           <View style={{ alignItems: 'center', marginTop: 80 }}>
             <Text style={{ fontSize: 16, color: '#9ca3af' }}>ゴールがまだありません</Text>
@@ -110,8 +111,10 @@ export default function GoalsScreen() {
           </View>
         }
       />
+      {/* バナー広告（下部固定） */}
+      <AdBanner fixed />
       <Pressable
-        style={{ position: 'absolute', bottom: 24, right: 24, backgroundColor: '#3b82f6', width: 56, height: 56, borderRadius: 28, alignItems: 'center', justifyContent: 'center' }}
+        style={{ position: 'absolute', bottom: 70, right: 24, backgroundColor: '#3b82f6', width: 56, height: 56, borderRadius: 28, alignItems: 'center', justifyContent: 'center' }}
         onPress={() => router.push('/goals/new' as Href)}
       >
         <Text style={{ color: '#fff', fontSize: 32, lineHeight: 36 }}>+</Text>
