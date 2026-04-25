@@ -18,10 +18,10 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
   },
   ios: {
     supportsTablet: true,
-    bundleIdentifier: 'com.crescendo.app',
+    bundleIdentifier: 'com.okawahiroto.crescendo.app',
   },
   android: {
-    package: 'com.crescendo.app',
+    package: 'com.okawahiroto.crescendo.app',
     adaptiveIcon: {
       foregroundImage: './assets/images/adaptive-icon.png',
       backgroundColor: '#ffffff',
