@@ -1,5 +1,74 @@
 # Changelog
 
+## 2026-04-26 — Hotfix: Web 500エラー修正
+
+### 問題
+`lottie-react-native` の web エントリが `@lottiefiles/dotlottie-react`（未インストール）を
+`require` するため、Web バンドルで 500 Internal Server Error が発生。
+Metro はランタイムの `Platform.OS` 条件に関わらず全 `require` をバンドルするため、
+条件分岐だけでは回避不可。
+
+### 対応
+`CelebrationOverlay` をプラットフォーム別ファイルに分離:
+
+- `src/components/CelebrationOverlay.native.tsx` — iOS/Android 用（LottieView を直接使用）
+- `src/components/CelebrationOverlay.tsx` — Web 用（Reanimated のみ、Lottie なし）
+
+Metro のファイル解決ルール（`.native.tsx` 優先）により自動的に振り分けられる。
+
+---
+
+## 2026-04-26 — Phase 5: 星演出・お祝いアニメーション
+
+### パッケージ追加
+- `react-native-reanimated@3.x` — バウンスアニメーション
+- `lottie-react-native` + `assets/lottie/confetti.json` / `fireworks.json`
+
+### コンポーネント実装
+- `src/components/StarBadge.tsx`
+  - `practiceCount` に応じて4段階で星絵文字・色を切り替え（empty / yellow / gold / rainbow）
+  - `size="large"` — 練習記録画面の中央に大きく表示、ラベルバッジ付き
+  - `size="small"` — 一覧画面のバッジ表示
+  - `animate` prop が true のとき Reanimated でバウンス（`withSequence + withSpring`）
+  - `getNextMilestone(count)` — 次のマイルストーンまでの残り回数テキストを返す
+  - `checkMilestone(prev, next)` — カウントアップ時にマイルストーン到達を判定し `'gold' | 'rainbow' | null` を返す
+
+- `src/components/CelebrationOverlay.native.tsx` / `.tsx`
+  - Modal + 半透明バックドロップ + カードをスプリングアニメーションで表示
+  - 3秒後に自動クローズ、タップでも閉じる
+  - ネイティブ版: LottieView で紙吹雪（confetti）または花火（fireworks）を全画面再生
+  - Web 版: Lottie なし、アニメーション演出のみ
+
+### 既存画面への組み込み
+- `app/goals/[goalId]/pieces/[pieceId]/index.tsx` — 各セクションカードに `StarBadge size="small"` を追加
+- `app/goals/[goalId]/pieces/[pieceId]/sections/[sectionId]/index.tsx`
+  - 画面上部に `StarBadge size="large" animate={animateStar}` を表示
+  - 練習回数を大きく表示 + 次のマイルストーンまでの残り回数テキスト
+  - `handleAddLog` 内で `checkMilestone` を呼び出し、達成時に300ms後に `CelebrationOverlay` を表示
+  - 星バウンスは記録直後に800msで再生
+
+---
+
+## 2026-04-26 — Phase 4: ダッシュボード
+
+### API
+- `src/features/dashboard/api.ts` — `fetchDashboardStats()`
+  - アクティブなゴール全件を取得し、pieces/sections をネスト並列で集計
+  - `totalPracticeCount`（全練習回数合計）/ `totalSections`（練習箇所数）/ `totalPieces`（曲数）
+  - Firestore 複合インデックスを避けるためクライアント側で集計
+
+### 画面実装
+- `app/(tabs)/two.tsx` — ダッシュボード画面
+  - `CountdownCard` — 直近3件のゴールを残り日数つきで表示（色分け: 赤7日以内 / 橙30日以内 / 緑それ以外）
+  - `StatCard` — ゴール数・曲数・練習箇所数の3つのカウンターをグリッド表示
+  - `StarDisplay` — 総練習回数を星で表示（10回刻みの星 + 余り回数テキスト）
+  - `useFocusEffect` でタブ切り替え時に自動リロード
+
+### タブナビゲーション更新
+- `app/(tabs)/_layout.tsx` — タブ2を「ダッシュボード」に変更
+
+---
+
 ## 2026-04-26 — Phase 3: コア機能 CRUD
 
 ### パッケージ追加
