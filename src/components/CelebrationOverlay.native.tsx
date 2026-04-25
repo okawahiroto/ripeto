@@ -6,6 +6,7 @@ import Animated, {
   withSpring,
   withTiming,
 } from 'react-native-reanimated';
+import LottieView from 'lottie-react-native';
 
 type CelebrationKind = 'gold' | 'rainbow';
 
@@ -21,6 +22,8 @@ const CELEBRATION_CONFIG = {
     message: 'ゴールドスターに輝きました',
     color: '#d97706',
     bg: '#fef9c3',
+    // eslint-disable-next-line @typescript-eslint/no-require-imports
+    lottie: require('@/assets/lottie/confetti.json'),
   },
   rainbow: {
     emoji: '✨',
@@ -28,6 +31,8 @@ const CELEBRATION_CONFIG = {
     message: '虹色に輝く伝説の練習箇所！',
     color: '#8b5cf6',
     bg: '#f5f3ff',
+    // eslint-disable-next-line @typescript-eslint/no-require-imports
+    lottie: require('@/assets/lottie/fireworks.json'),
   },
 } as const;
 
@@ -67,6 +72,9 @@ export function CelebrationOverlay({ kind, onClose }: CelebrationOverlayProps) {
       <Animated.View
         style={[{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, backgroundColor: '#000' }, backdropStyle]}
       />
+      <View style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, pointerEvents: 'none' }}>
+        <LottieView source={config.lottie} autoPlay loop={false} style={{ flex: 1 }} />
+      </View>
       <Pressable style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }} onPress={onClose}>
         <Animated.View style={[{
           backgroundColor: config.bg, borderRadius: 24, padding: 36, alignItems: 'center', width: 280,
