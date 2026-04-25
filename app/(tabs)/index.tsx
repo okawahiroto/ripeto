@@ -59,10 +59,19 @@ export default function GoalsScreen() {
   const load = useCallback(async () => {
     try {
       setLoading(true);
+      const { auth } = await import('@/src/lib/firebase');
+      // 認証完了を待ってから Firestore を叩く
+      if (!auth.currentUser) {
+        await new Promise<void>((resolve) => {
+          const unsub = auth.onAuthStateChanged((user) => {
+            if (user) { unsub(); resolve(); }
+          });
+        });
+      }
       const data = await fetchActiveGoals();
       setGoals(data);
     } catch (e) {
-      console.error(e);
+      console.error('fetchActiveGoals error:', e);
     } finally {
       setLoading(false);
     }

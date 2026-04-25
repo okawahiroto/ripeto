@@ -5,7 +5,6 @@ import {
   updateDoc,
   getDocs,
   query,
-  where,
   orderBy,
   Timestamp,
 } from 'firebase/firestore';
@@ -46,9 +45,12 @@ export async function createGoal(title: string, eventDate: Date): Promise<Goal> 
 }
 
 export async function fetchActiveGoals(): Promise<Goal[]> {
-  const q = query(goalsCol(), where('status', '==', 'active'), orderBy('eventDate', 'asc'));
+  // where + orderBy の複合インデックスを避けるため、全件取得してクライアント側でフィルタ・ソート
+  const q = query(goalsCol(), orderBy('eventDate', 'asc'));
   const snap = await getDocs(q);
-  return snap.docs.map((d) => toGoal(d.id, d.data() as Record<string, unknown>));
+  return snap.docs
+    .map((d) => toGoal(d.id, d.data() as Record<string, unknown>))
+    .filter((g) => g.status === 'active');
 }
 
 export async function completeGoal(goalId: string): Promise<void> {

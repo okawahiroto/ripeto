@@ -29,11 +29,25 @@ export default function NewGoalScreen() {
 
     try {
       setLoading(true);
+
+      // 匿名認証の完了を最大5秒待つ
+      const { auth } = await import('@/src/lib/firebase');
+      if (!auth.currentUser) {
+        await new Promise<void>((resolve, reject) => {
+          const unsubscribe = auth.onAuthStateChanged((user) => {
+            unsubscribe();
+            if (user) resolve();
+            else reject(new Error('認証タイムアウト'));
+          });
+          setTimeout(() => reject(new Error('認証タイムアウト')), 5000);
+        });
+      }
+
       await createGoal(title.trim(), eventDate);
       router.back();
     } catch (e) {
       console.error(e);
-      Alert.alert('エラー', '保存に失敗しました');
+      Alert.alert('エラー', `保存に失敗しました\n${e instanceof Error ? e.message : ''}`);
     } finally {
       setLoading(false);
     }
