@@ -3,15 +3,9 @@ import { View, Text, TextInput, Pressable, FlatList, ActivityIndicator, Alert } 
 import { useFocusEffect, useLocalSearchParams } from 'expo-router';
 import { addLog, fetchLogs } from '@/src/features/logs/api';
 import { fetchSections } from '@/src/features/sections/api';
-import { getStarLevel } from '@/src/types/models';
+import { StarBadge, getNextMilestone, checkMilestone } from '@/src/components/StarBadge';
+import { CelebrationOverlay } from '@/src/components/CelebrationOverlay';
 import type { PracticeLog, Section } from '@/src/types/models';
-
-const STAR_EMOJI: Record<ReturnType<typeof getStarLevel>, string> = {
-  empty: '☆',
-  yellow: '⭐',
-  gold: '🌟',
-  rainbow: '✨',
-};
 
 function LogItem({ log }: { log: PracticeLog }) {
   return (
@@ -40,6 +34,8 @@ export default function SectionDetailScreen() {
   const [note, setNote] = useState('');
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
+  const [celebration, setCelebration] = useState<'gold' | 'rainbow' | null>(null);
+  const [animateStar, setAnimateStar] = useState(false);
 
   const load = useCallback(async () => {
     try {
@@ -68,14 +64,22 @@ export default function SectionDetailScreen() {
     try {
       setSaving(true);
       const newLog = await addLog(goalId, pieceId, sectionId, note.trim());
-      const newCount = (section?.practiceCount ?? 0) + 1;
+      const prevCount = section?.practiceCount ?? 0;
+      const newCount = prevCount + 1;
 
       setLogs((prev) => [newLog, ...prev]);
       setNote('');
       setSection((prev) => (prev ? { ...prev, practiceCount: newCount } : prev));
 
-      if (newCount === 10) Alert.alert('🌟 10回達成！', 'ゴールドスターに輝きました！');
-      if (newCount === 100) Alert.alert('✨ 100回達成！', '虹色に輝く伝説の練習箇所です！');
+      // 星アニメーション
+      setAnimateStar(true);
+      setTimeout(() => setAnimateStar(false), 800);
+
+      // マイルストーン達成チェック
+      const milestone = checkMilestone(prevCount, newCount);
+      if (milestone) {
+        setTimeout(() => setCelebration(milestone), 300);
+      }
     } catch (e) {
       console.error(e);
       Alert.alert('エラー', '保存に失敗しました');
@@ -92,15 +96,20 @@ export default function SectionDetailScreen() {
     );
   }
 
-  const level = getStarLevel(section.practiceCount);
+  const nextMilestone = getNextMilestone(section.practiceCount);
 
   return (
     <View style={{ flex: 1, backgroundColor: '#f9fafb' }}>
       {/* 星と練習回数 */}
-      <View style={{ backgroundColor: '#fff', paddingHorizontal: 20, paddingVertical: 16, borderBottomWidth: 1, borderBottomColor: '#f3f4f6', alignItems: 'center' }}>
-        <Text style={{ fontSize: 48, marginBottom: 4 }}>{STAR_EMOJI[level]}</Text>
-        <Text style={{ fontSize: 28, fontWeight: '700', color: '#1f2937' }}>{section.practiceCount}</Text>
+      <View style={{ backgroundColor: '#fff', paddingHorizontal: 20, paddingVertical: 20, borderBottomWidth: 1, borderBottomColor: '#f3f4f6', alignItems: 'center' }}>
+        <StarBadge count={section.practiceCount} size="large" animate={animateStar} />
+        <Text style={{ fontSize: 36, fontWeight: '800', color: '#1f2937', marginTop: 12 }}>
+          {section.practiceCount}
+        </Text>
         <Text style={{ fontSize: 13, color: '#9ca3af' }}>回練習</Text>
+        {nextMilestone && (
+          <Text style={{ fontSize: 12, color: '#6b7280', marginTop: 6 }}>{nextMilestone}</Text>
+        )}
       </View>
 
       {/* ログ入力 */}
@@ -139,6 +148,9 @@ export default function SectionDetailScreen() {
           </View>
         }
       />
+
+      {/* お祝いオーバーレイ */}
+      <CelebrationOverlay kind={celebration} onClose={() => setCelebration(null)} />
     </View>
   );
 }

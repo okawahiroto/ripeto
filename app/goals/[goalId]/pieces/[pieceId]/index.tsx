@@ -3,20 +3,11 @@ import { View, Text, FlatList, Pressable, ActivityIndicator } from 'react-native
 import { useFocusEffect, useLocalSearchParams, useRouter } from 'expo-router';
 import type { Href } from 'expo-router';
 import { fetchSections } from '@/src/features/sections/api';
-import { getStarLevel } from '@/src/types/models';
+import { StarBadge } from '@/src/components/StarBadge';
 import type { Section } from '@/src/types/models';
-
-const STAR_EMOJI: Record<ReturnType<typeof getStarLevel>, string> = {
-  empty: '☆',
-  yellow: '⭐',
-  gold: '🌟',
-  rainbow: '✨',
-};
 
 function SectionCard({ section }: { section: Section }) {
   const router = useRouter();
-  const level = getStarLevel(section.practiceCount);
-
   return (
     <Pressable
       style={{ backgroundColor: '#fff', borderRadius: 14, padding: 16, marginBottom: 10, borderWidth: 1, borderColor: '#f3f4f6', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}
@@ -26,7 +17,7 @@ function SectionCard({ section }: { section: Section }) {
         <Text style={{ fontSize: 15, fontWeight: '500', color: '#1f2937' }}>{section.title}</Text>
         <Text style={{ fontSize: 12, color: '#9ca3af', marginTop: 2 }}>{section.practiceCount}回練習</Text>
       </View>
-      <Text style={{ fontSize: 28 }}>{STAR_EMOJI[level]}</Text>
+      <StarBadge count={section.practiceCount} size="small" />
     </Pressable>
   );
 }
