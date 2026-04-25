@@ -4,13 +4,13 @@
 
 ## 現在のフェーズ
 
-**Phase 1: 完了 / Phase 2（認証）着手前**
+**Phase 2: 完了 / Phase 3（コア機能 CRUD）着手前**
 
 ## 次にやること
 
-1. Firebase プロジェクトの作成（Firebase Console で手動）
-2. `.env` に Firebase キーを設定
-3. Phase 2: Firebase 匿名認証 + Zustand 認証状態管理の実装
+1. Phase 3: ゴール・曲目・練習箇所・練習ログの CRUD 実装
+2. Google ログイン用 OAuth クライアント ID を `.env` に追加（任意、後回し可）
+   - `GOOGLE_IOS_CLIENT_ID` / `GOOGLE_ANDROID_CLIENT_ID`
 
 ## 直近の作業ログ
 

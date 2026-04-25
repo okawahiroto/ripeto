@@ -9,18 +9,17 @@ import { useEffect } from 'react';
 import 'react-native-reanimated';
 
 import { useColorScheme } from '@/components/useColorScheme';
+import { subscribeAuthState, signInAnon } from '@/src/features/auth/api';
+import { useAuthStore } from '@/src/stores/authStore';
 
 export {
-  // Catch any errors thrown by the Layout component.
   ErrorBoundary,
 } from 'expo-router';
 
 export const unstable_settings = {
-  // Ensure that reloading on `/modal` keeps a back button present.
   initialRouteName: '(tabs)',
 };
 
-// Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
@@ -29,7 +28,28 @@ export default function RootLayout() {
     ...FontAwesome.font,
   });
 
-  // Expo Router uses Error Boundaries to catch errors in the navigation tree.
+  const setUser = useAuthStore((s) => s.setUser);
+  const setStatus = useAuthStore((s) => s.setStatus);
+
+  // Firebase 認証状態を購読し、未ログインなら匿名ログインを自動実行
+  useEffect(() => {
+    const unsubscribe = subscribeAuthState(async (user) => {
+      if (user) {
+        setUser(user);
+        setStatus(user.isAnonymous ? 'anonymous' : 'linked');
+      } else {
+        // 未ログイン → 匿名ログインを自動実行
+        try {
+          await signInAnon();
+        } catch (e) {
+          console.error('匿名ログインに失敗しました', e);
+        }
+      }
+    });
+
+    return unsubscribe;
+  }, [setUser, setStatus]);
+
   useEffect(() => {
     if (error) throw error;
   }, [error]);

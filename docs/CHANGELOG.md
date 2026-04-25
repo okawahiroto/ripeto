@@ -1,5 +1,38 @@
 # Changelog
 
+## 2026-04-26 — Phase 2: 認証
+
+### パッケージ追加
+
+- `zustand@5.0.12` — 認証状態管理
+- `expo-auth-session` / `expo-crypto` — Google OAuth
+- `expo-apple-authentication` — Apple Sign In
+
+### 実装内容
+
+- `src/types/auth.ts` — `AuthStatus`（loading / anonymous / linked）と `AuthState` 型を定義
+- `src/stores/authStore.ts` — Zustand で `user` / `status` を管理
+- `src/lib/firebase.ts` — `initializeAuth` に AsyncStorage 永続化を追加
+  - `getReactNativePersistence` は Metro が実行時に react-native 条件で解決
+  - TypeScript 型解決の問題は `require` + 型キャストで回避
+- `src/features/auth/api.ts`
+  - `signInAnon()` — Firebase 匿名ログイン
+  - `subscribeAuthState()` — 認証状態変化の購読
+  - `linkWithGoogle()` — Google アカウントリンク
+  - `linkWithApple()` — Apple アカウントリンク（PKCE nonce 付き）
+- `src/features/auth/useGoogleAuth.ts` — Google OAuth フック（expo-auth-session）
+- `src/features/auth/useAppleAuth.ts` — Apple Sign In フック（iOS のみ）
+- `app/_layout.tsx` — 認証ガード追加
+  - アプリ起動時に `onAuthStateChanged` を購読
+  - 未ログイン時は `signInAnon()` を自動実行
+
+### 引継ぎ事項
+
+- Google ログインには Firebase Console で OAuth クライアント ID の発行が必要
+  - `GOOGLE_IOS_CLIENT_ID` / `GOOGLE_ANDROID_CLIENT_ID` を `.env` に追加
+- Apple ログインは iOS のみ（`expo-apple-authentication` は Android 非対応）
+- Google / Apple リンクの UI 画面は Phase 3 以降に作成予定
+
 ## 2026-04-26 — Phase 1: プロジェクト基盤構築
 
 ### Expo プロジェクト初期化
