@@ -75,6 +75,15 @@ function RootLayoutNav() {
       <Stack>
         <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
         <Stack.Screen name="modal" options={{ presentation: 'modal' }} />
+        {/* ゴール */}
+        <Stack.Screen name="goals/new" options={{ title: 'ゴールを追加', presentation: 'modal' }} />
+        <Stack.Screen name="goals/[goalId]/index" options={{ title: '曲目' }} />
+        {/* 曲目 */}
+        <Stack.Screen name="goals/[goalId]/pieces/new" options={{ title: '曲目を追加', presentation: 'modal' }} />
+        <Stack.Screen name="goals/[goalId]/pieces/[pieceId]/index" options={{ title: '練習箇所' }} />
+        {/* 練習箇所 */}
+        <Stack.Screen name="goals/[goalId]/pieces/[pieceId]/sections/new" options={{ title: '練習箇所を追加', presentation: 'modal' }} />
+        <Stack.Screen name="goals/[goalId]/pieces/[pieceId]/sections/[sectionId]/index" options={{ title: '練習記録' }} />
       </Stack>
     </ThemeProvider>
   );

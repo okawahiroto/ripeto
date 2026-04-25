@@ -1,5 +1,37 @@
 # Changelog
 
+## 2026-04-26 — Phase 3: コア機能 CRUD
+
+### パッケージ追加
+- `react-hook-form` / `zod` / `@hookform/resolvers`
+
+### 型定義
+- `src/types/models.ts` — Goal / Piece / Section / PracticeLog の型と `getStarLevel()` を定義
+
+### Firestore API
+- `src/features/goals/api.ts` — `createGoal` / `fetchActiveGoals` / `completeGoal`
+- `src/features/pieces/api.ts` — `createPiece` / `fetchPieces` / `deletePiece`
+- `src/features/sections/api.ts` — `createSection` / `fetchSections` / `incrementPracticeCount` / `deleteSection`
+- `src/features/logs/api.ts` — `addLog`（practiceCount +1 を同時実行）/ `fetchLogs`
+
+### 画面実装
+- `app/(tabs)/index.tsx` — ゴール一覧（残り日数バッジ・完了ボタン）
+- `app/(tabs)/_layout.tsx` — タブアイコン・タイトルを変更
+- `app/goals/new.tsx` — ゴール作成（タイトル + 本番日入力）
+- `app/goals/[goalId]/index.tsx` — 曲目一覧
+- `app/goals/[goalId]/pieces/new.tsx` — 曲目作成
+- `app/goals/[goalId]/pieces/[pieceId]/index.tsx` — 練習箇所一覧（星絵文字表示）
+- `app/goals/[goalId]/pieces/[pieceId]/sections/new.tsx` — 練習箇所作成
+- `app/goals/[goalId]/pieces/[pieceId]/sections/[sectionId]/index.tsx` — 練習記録（星 + カウンター + ログ一覧）
+  - 10回・100回達成時にアラート表示
+  - メモ入力 → 「記録」ボタンで3タップ完了
+
+### ナビゲーション
+- `app/_layout.tsx` に全 Stack.Screen を登録
+- modal presentation で作成画面をスライドアップ
+
+---
+
 ## 2026-04-26 — Phase 2: 認証
 
 ### パッケージ追加

@@ -1,8 +1,8 @@
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import Constants from 'expo-constants';
 import { initializeApp } from 'firebase/app';
-import { initializeAuth } from 'firebase/auth';
+import { initializeAuth, browserLocalPersistence } from 'firebase/auth';
 import { initializeFirestore, persistentLocalCache } from 'firebase/firestore';
+import { Platform } from 'react-native';
 
 // expo-constants 経由で環境変数を取得（app.config.ts の extra フィールド）
 const firebaseConfig = {
@@ -16,18 +16,25 @@ const firebaseConfig = {
 
 export const app = initializeApp(firebaseConfig);
 
-// getReactNativePersistence は @firebase/auth の react-native 条件付きエクスポート。
-// Metro は実行時に正しく解決するが TypeScript の型解決が browser 版を向くため require で回避。
-// getReactNativePersistence は @firebase/auth の react-native 条件付きエクスポート。
-// Metro は実行時に正しく解決するが TypeScript の型解決が browser 版を向くため require で回避。
-// eslint-disable-next-line @typescript-eslint/no-require-imports
-const { getReactNativePersistence } = require('@firebase/auth') as {
-  getReactNativePersistence: (storage: typeof AsyncStorage) => import('firebase/auth').Persistence;
-};
+// Web: browserLocalPersistence / Native: AsyncStorage（getReactNativePersistence）
+function buildAuth() {
+  if (Platform.OS === 'web') {
+    return initializeAuth(app, { persistence: browserLocalPersistence });
+  }
 
-export const auth = initializeAuth(app, {
-  persistence: getReactNativePersistence(AsyncStorage),
-});
+  // getReactNativePersistence は Metro が実行時に react-native 条件で解決する。
+  // TypeScript の型解決が browser 版を向くため require で回避。
+  // eslint-disable-next-line @typescript-eslint/no-require-imports
+  const AsyncStorage = require('@react-native-async-storage/async-storage').default;
+  // eslint-disable-next-line @typescript-eslint/no-require-imports
+  const { getReactNativePersistence } = require('@firebase/auth') as {
+    getReactNativePersistence: (s: unknown) => import('firebase/auth').Persistence;
+  };
+
+  return initializeAuth(app, { persistence: getReactNativePersistence(AsyncStorage) });
+}
+
+export const auth = buildAuth();
 
 // Firestore: オフライン永続化を有効化（練習室の電波不良対策）
 export const db = initializeFirestore(app, {
