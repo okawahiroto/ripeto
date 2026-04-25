@@ -1,5 +1,34 @@
 # Changelog
 
+## 2026-04-26 — セキュリティチェック
+
+### 確認内容と結果（全項目クリア）
+
+| 確認項目 | 結果 |
+|---|---|
+| `.env` が git 管理下か | ✅ `.gitignore` で除外済み、未追跡 |
+| `.env.example` の内容 | ✅ キー名のみ、値は空 |
+| `app.config.ts` にベタ書きがないか | ✅ `process.env.*` 参照のみ |
+| `src/lib/firebase.ts` にベタ書きがないか | ✅ `Constants.expoConfig.extra` 経由 |
+| `google-services.json` / `GoogleService-Info.plist` の混入 | ✅ ファイル自体なし |
+| git 全履歴に `AIza...` 等の実キーが含まれるか | ✅ なし |
+| `eas.json` の混入 | ✅ ファイル自体なし |
+| `package.json` にキー・トークンの直書きがないか | ✅ なし |
+
+### 秘匿値の流れ（設計）
+```
+.env（gitignore済み）
+  └─ app.config.ts（process.env.* で読み込み）
+       └─ expo-constants（Constants.expoConfig.extra）
+            └─ src/lib/firebase.ts 等（実行時に参照）
+```
+
+### 将来の注意点
+- EAS Build を使う際は `eas secret:create` で EAS Secrets に移行する
+- `google-services.json` / `GoogleService-Info.plist` は生成されても `.gitignore` に追加すること
+
+---
+
 ## 2026-04-26 — Hotfix: Web 500エラー修正
 
 ### 問題
