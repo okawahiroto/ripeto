@@ -1,5 +1,84 @@
 # Changelog
 
+## 2026-04-26 — iOSシミュレータ動作確認
+
+### 経緯
+`expo run:ios` がシミュレータを実機として誤認識し、コード署名エラーで失敗。
+原因は Xcode 26（beta）が新しすぎて Expo SDK 54 の CLI が devicectl の出力を解析できないバグ。
+
+### 対応
+Expo CLI を諦め、Xcode コマンドラインツールを直接使う方法で解決:
+1. `xcodebuild -sdk iphonesimulator` でシミュレータ向けビルド
+2. `xcrun simctl install` でシミュレータにインストール
+3. `xcrun simctl launch` でアプリ起動
+
+### 結果
+iPhone 17 Pro シミュレータ（iOS 26）で正常起動・動作確認済み。
+
+### 注意点
+- EAS Build（本番ビルド）ではこの問題は発生しない
+- Expo SDK がアップグレードされれば `expo run:ios` が直る可能性あり
+
+---
+
+## 2026-04-26 — アプリ名・Bundle ID変更
+
+### 変更内容
+- アプリ名: `Crescendo` → `Ripeto`（イタリア語で「繰り返す」、名前競合のため変更）
+- Bundle ID: `com.crescendo.app` → `com.okawahiroto.ripeto`
+- 変更ファイル: `app.config.ts` / `app/premium.tsx` / `package.json`
+
+### 外部サービス側の対応
+- Firebase: iOS/Android アプリを `com.okawahiroto.ripeto` で再登録済み
+- AdMob: アプリ名を Ripeto で登録済み
+- RevenueCat: `com.okawahiroto.ripeto` で登録済み
+
+---
+
+## 2026-04-26 — Hotfix: AdMob Web 500エラー修正
+
+### 問題
+`react-native-google-mobile-ads` が Web 非対応のため、CelebrationOverlay と同様に
+Metro が Web バンドル時にネイティブ専用モジュールを require してクラッシュ。
+
+### 対応
+`admob.ts` と `BannerAd.tsx` をプラットフォーム別に分離:
+- `src/lib/admob.native.ts` — iOS/Android 用（実際の AdMob 初期化）
+- `src/lib/admob.ts` — Web 用スタブ（何もしない）
+- `src/components/BannerAd.native.tsx` — iOS/Android 用（BannerAd コンポーネント）
+- `src/components/BannerAd.tsx` — Web 用スタブ（null を返す）
+
+---
+
+## 2026-04-26 — Phase 6: 収益化（AdMob・RevenueCat）
+
+### パッケージ追加
+- `react-native-google-mobile-ads` — AdMob バナー広告
+- `react-native-purchases` — RevenueCat 課金管理
+
+### 外部サービス設定
+- AdMob: iOS・Android アプリ登録、バナー広告ユニット作成（パートナー入札有効）
+- RevenueCat: プロジェクト作成、iOS アプリ登録、P8キー設定
+- 各キーを `.env` に設定済み（`ADMOB_*` 4項目、`REVENUECAT_API_KEY_IOS`）
+- `REVENUECAT_API_KEY_ANDROID` は Google Play Console 登録後に設定予定
+
+### 実装内容
+- `src/lib/admob.native.ts` — AdMob 初期化・バナーID管理（未設定時はGoogleテストIDを使用）
+- `src/lib/purchases.ts` — RevenueCat 初期化・premium 判定（`checkPremium()`）
+- `src/stores/purchaseStore.ts` — `isPremium` を Zustand で管理
+- `src/components/BannerAd.native.tsx` — バナー広告コンポーネント（premium ユーザーは非表示）
+- `app/premium.tsx` — 買い切り購入・復元画面
+- `app/(tabs)/index.tsx` — ゴール一覧下部にバナー広告を追加
+- `app/(tabs)/two.tsx` — ダッシュボード下部にバナー広告・プレミアム導線を追加
+- `app/_layout.tsx` — 起動時に AdMob・RevenueCat を初期化、premium 状態を取得
+
+### 課金フロー
+- RevenueCat の `premium` entitlement を保有しているか起動時にチェック
+- 保有者は広告が完全非表示（`isPremium === true`）
+- 購入・復元は `app/premium.tsx` から実行
+
+---
+
 ## 2026-04-26 — セキュリティチェック
 
 ### 確認内容と結果（全項目クリア）
