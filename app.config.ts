@@ -3,12 +3,12 @@ import { ExpoConfig, ConfigContext } from 'expo/config';
 
 export default ({ config }: ConfigContext): ExpoConfig => ({
   ...config,
-  name: 'Crescendo',
-  slug: 'crescendo',
+  name: 'Ripeto',
+  slug: 'ripeto',
   version: '1.0.0',
   orientation: 'portrait',
   icon: './assets/images/icon.png',
-  scheme: 'crescendo',
+  scheme: 'ripeto',
   userInterfaceStyle: 'automatic',
   newArchEnabled: true,
   splash: {
@@ -18,10 +18,10 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
   },
   ios: {
     supportsTablet: true,
-    bundleIdentifier: 'com.okawahiroto.crescendo',
+    bundleIdentifier: 'com.okawahiroto.ripeto',
   },
   android: {
-    package: 'com.okawahiroto.crescendo',
+    package: 'com.okawahiroto.ripeto',
     adaptiveIcon: {
       foregroundImage: './assets/images/adaptive-icon.png',
       backgroundColor: '#ffffff',

@@ -64,7 +64,7 @@ export default function PremiumScreen() {
       <View style={{ alignItems: 'center', marginBottom: 32 }}>
         <Text style={{ fontSize: 48, marginBottom: 12 }}>⭐</Text>
         <Text style={{ fontSize: 24, fontWeight: '800', color: '#1f2937', marginBottom: 8 }}>
-          Crescendo プレミアム
+          Ripeto プレミアム
         </Text>
         <Text style={{ fontSize: 15, color: '#6b7280', textAlign: 'center', lineHeight: 22 }}>
           買い切りで広告を完全非表示にできます
