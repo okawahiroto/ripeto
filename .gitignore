@@ -48,3 +48,6 @@ credentials.json
 # Claude Code
 .claude/
 CLAUDE.local.md*
+
+# Memo
+memo.md
