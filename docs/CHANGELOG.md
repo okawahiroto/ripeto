@@ -1,5 +1,45 @@
 # Changelog
 
+## 2026-04-30 — Phase 7: EAS Build 設定
+
+### 実施内容
+- EAS CLI v18.8.1 をグローバルインストール
+- `eas.json` 作成（development / preview / production の3プロファイル）
+- `app.config.ts` に EAS projectId（`18b5af08-f171-4dd9-8104-933f09283474`）をハードコード
+- `.gitignore` に `google-play-service-account.json` を追加
+- EAS 環境変数 11件を全プロファイルに登録（Firebase 6件・AdMob 4件・RevenueCat iOS 1件）
+- `scripts/setup-eas-secrets.sh` — `.env` から EAS Secrets を一括登録するヘルパー作成
+
+### トラブルと対応
+
+**① `eas.json` バリデーションエラー**
+空文字 `""` を書いた `ascAppId` / `appleTeamId` が不正値として弾かれた。
+→ 値が未確定のフィールドはキーごと削除。
+
+**② `eas build:configure` が `app.config.ts` に書き込めない**
+EAS CLI は `app.json` しか自動書き込みできず、TypeScript の動的設定は対象外。
+→ 表示された projectId を手動でハードコード（公開情報なので問題なし）。
+
+**③ `eas secret:create` が deprecated**
+EAS CLI v18 で `eas secret:*` → `eas env:*` に移行済みだった。
+`--environment` フラグはカンマ区切り不可で、複数回指定が正しい形式。
+→ スクリプトを `eas env:create` 対応に書き直し。
+
+**④ スクリプトが1件で止まる**
+`while read` ループで `.env` を stdin として読む際に、内部の `eas env:create` も stdin を消費して残りを食い尽くした。
+→ `eas env:create ... < /dev/null` で stdin を切り離して解決。
+
+**⑤ `npx expo config` が毎回失敗**
+途中の `npm install --save-dev typescript` 実行時に `@expo/cli` が欠落した（npm v25 の依存解決競合）。
+→ `npm install expo@~54.0.33` で再インストールして修復。
+
+### 残作業
+- `REVENUECAT_API_KEY_ANDROID` — Google Play Console 登録後に `eas env:create` で追加
+- `submit.production.ios.ascAppId` / `appleTeamId` — App Store Connect でアプリ登録後に `eas.json` へ追記
+- `submit.production.android.serviceAccountKeyPath` — Google Play サービスアカウントJSON取得後に配置
+
+---
+
 ## 2026-04-26 — iOSシミュレータ動作確認
 
 ### 経緯

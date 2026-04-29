@@ -4,16 +4,22 @@
 
 ## 現在のフェーズ
 
-**Phase 3: 完了 / Phase 4（ダッシュボード）着手前**
+**Phase 7: リリース準備（着手中）**
+Phase 1〜6（基盤・認証・CRUD・ダッシュボード・星演出・収益化）はすべて完了済み。
 
 ## 次にやること
 
-1. Phase 4: ダッシュボード画面の実装
-   - 残り日数カウントダウン（直近3件）
-   - 各種カウンター表示（ゴール数・曲数・練習箇所数）
-   - 練習回数の星表示
+1. iOS ビルド確認（`eas build --profile preview --platform ios`）
+2. アプリアイコン・スプラッシュ画面（ブランドカラー決定が先決）
+3. プライバシーポリシー・利用規約
+4. App Store 申請準備（スクリーンショット・説明文）
+5. EAS Submit 設定（`eas.json` の `ascAppId` / `appleTeamId` 追記）
 
 ## 直近の作業ログ
+
+### 2026-04-30 (Phase 7 着手)
+- EAS Build 設定完了（eas.json / EAS 環境変数11件登録）
+- 詳細は docs/CHANGELOG.md の「2026-04-30 — Phase 7: EAS Build 設定」を参照
 
 ### 2026-04-26 (Phase 1 完了)
 - Expo SDK 54 + Expo Router 6 でプロジェクト初期化（タブ構成）
