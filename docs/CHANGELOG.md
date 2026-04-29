@@ -1,5 +1,14 @@
 # Changelog
 
+## 2026-04-30 — Phase 7: EAS Build 設定・実機動作確認
+
+### 実施内容
+- `preview-device` プロファイル追加（`distribution: internal`、simulator なし）
+- `eas device:create` で iPhone を EAS に登録
+- `eas build --profile preview-device --platform ios` で実機インストール確認 ✅
+
+---
+
 ## 2026-04-30 — Phase 7: EAS Build 設定
 
 ### 実施内容
