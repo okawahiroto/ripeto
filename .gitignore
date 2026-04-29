@@ -41,6 +41,10 @@ yarn-error.*
 /ios
 /android
 
+# EAS / Google Play
+google-play-service-account.json
+credentials.json
+
 # Claude Code
 .claude/
 CLAUDE.local.md*
