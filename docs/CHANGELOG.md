@@ -1,5 +1,14 @@
 # Changelog
 
+## 2026-05-01 — Android 動作確認
+
+### 実施内容
+- Android Studio インストール・エミュレータ（Pixel 8 / API 35）セットアップ
+- `eas build --profile preview --platform android` で APK ビルド
+- エミュレータ・実機の両方でインストール・動作確認 ✅
+
+---
+
 ## 2026-04-30 — Phase 7: EAS Build 設定・実機動作確認
 
 ### 実施内容
