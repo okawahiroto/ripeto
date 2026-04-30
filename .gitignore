@@ -51,3 +51,6 @@ CLAUDE.local.md*
 
 # Memo
 memo.md
+
+# Local builds
+build/
