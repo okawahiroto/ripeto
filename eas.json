@@ -34,7 +34,9 @@
   "submit": {
     "production": {
       "ios": {
-        "appleId": "okawa.hiroto@gmail.com"
+        "appleId": "okawa.hiroto@gmail.com",
+        "ascAppId": "6763823548",
+        "appleTeamId": "8J55C67JWN"
       },
       "android": {
         "serviceAccountKeyPath": "./google-play-service-account.json",
