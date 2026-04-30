@@ -72,13 +72,13 @@ Ripeto
 
 ### サポート URL
 ```
-https://github.com/okawahiroto/ripeto（要作成 or メール記載ページ）
+https://github.com/okawahiroto/ripeto
 ```
 > ※ 暫定対応: `mailto:okawa.hiroto@gmail.com` を掲載したシンプルな GitHub Pages ページを作成するか、メールアドレスをそのまま記載した静的ページを用意する。
 
 ### プライバシーポリシー URL
 ```
-https://okawahiroto.github.io/ripeto/privacy（要作成）
+https://okawahiroto.github.io/ripeto/privacy.html
 ```
 > ※ GitHub Pages にホスティングが必要。手順は本ドキュメント末尾を参照。
 
