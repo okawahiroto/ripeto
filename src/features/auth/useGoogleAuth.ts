@@ -1,24 +1,28 @@
-import * as AuthSession from 'expo-auth-session';
-import * as Crypto from 'expo-crypto';
 import { useAuthRequest } from 'expo-auth-session/providers/google';
 import { useEffect } from 'react';
+import Constants from 'expo-constants';
 import { linkWithGoogle } from './api';
 import { useAuthStore } from '@/src/stores/authStore';
 
-// Google OAuth クライアント ID は Firebase Console → Authentication → Sign-in method → Google で確認
-const IOS_CLIENT_ID = process.env.GOOGLE_IOS_CLIENT_ID;
-const ANDROID_CLIENT_ID = process.env.GOOGLE_ANDROID_CLIENT_ID;
+const extra = Constants.expoConfig?.extra as Record<string, string | undefined> | undefined;
+const IOS_CLIENT_ID = extra?.googleIosClientId;
+const ANDROID_CLIENT_ID = extra?.googleAndroidClientId;
+
+// useAuthRequest は iosClientId が falsy だと iOS でクラッシュするため、
+// 未設定時はプレースホルダーを渡して isAvailable フラグで機能を無効化する
+const isGoogleAvailable = !!(IOS_CLIENT_ID || ANDROID_CLIENT_ID);
 
 export function useGoogleAuth() {
   const setUser = useAuthStore((s) => s.setUser);
   const setStatus = useAuthStore((s) => s.setStatus);
 
   const [_request, response, promptAsync] = useAuthRequest({
-    iosClientId: IOS_CLIENT_ID,
-    androidClientId: ANDROID_CLIENT_ID,
+    iosClientId: IOS_CLIENT_ID ?? 'not-configured',
+    androidClientId: ANDROID_CLIENT_ID ?? 'not-configured',
   });
 
   useEffect(() => {
+    if (!isGoogleAvailable) return;
     if (response?.type !== 'success') return;
 
     const idToken = response.authentication?.idToken;
@@ -31,9 +35,8 @@ export function useGoogleAuth() {
     })();
   }, [response, setUser, setStatus]);
 
-  return { promptAsync };
+  return {
+    promptAsync: isGoogleAvailable ? promptAsync : async () => {},
+    isAvailable: isGoogleAvailable,
+  };
 }
-
-// AuthSession を使用していることを明示（未使用インポート防止）
-void AuthSession;
-void Crypto;

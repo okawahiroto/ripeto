@@ -66,5 +66,7 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
     admobBannerIos: process.env.ADMOB_BANNER_IOS,
     revenuecatApiKeyAndroid: process.env.REVENUECAT_API_KEY_ANDROID,
     revenuecatApiKeyIos: process.env.REVENUECAT_API_KEY_IOS,
+    googleIosClientId: process.env.GOOGLE_IOS_CLIENT_ID,
+    googleAndroidClientId: process.env.GOOGLE_ANDROID_CLIENT_ID,
   },
 });

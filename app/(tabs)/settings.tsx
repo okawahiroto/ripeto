@@ -79,7 +79,7 @@ function SettingsScreen() {
   const status = useAuthStore((s) => s.status);
   const user = useAuthStore((s) => s.user);
   const isPremium = usePurchaseStore((s) => s.isPremium);
-  const { promptAsync: promptGoogle } = useGoogleAuth();
+  const { promptAsync: promptGoogle, isAvailable: isGoogleAvailable } = useGoogleAuth();
   const { signInWithApple, isAvailable: isAppleAvailable } = useAppleAuth();
 
   const isLinked = status === 'linked';
@@ -121,8 +121,12 @@ function SettingsScreen() {
         <Row label="ステータス" value={accountLabel} chevron={false} />
         {!isLinked && (
           <>
-            <Divider />
-            <Row label="Googleアカウントで引き継ぐ" onPress={handleGoogleLink} />
+            {isGoogleAvailable && (
+              <>
+                <Divider />
+                <Row label="Googleアカウントで引き継ぐ" onPress={handleGoogleLink} />
+              </>
+            )}
             {isAppleAvailable && Platform.OS === 'ios' && (
               <>
                 <Divider />
