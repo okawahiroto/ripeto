@@ -19,6 +19,7 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
   ios: {
     supportsTablet: true,
     bundleIdentifier: 'com.okawahiroto.ripeto',
+    buildNumber: '2',
     infoPlist: {
       ITSAppUsesNonExemptEncryption: false,
     },
