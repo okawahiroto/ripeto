@@ -70,19 +70,51 @@ export function CelebrationOverlay({ kind, onClose }: CelebrationOverlayProps) {
   return (
     <Modal transparent animationType="none" visible={!!kind}>
       <Animated.View
-        style={[{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, backgroundColor: '#000' }, backdropStyle]}
+        style={[
+          { position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, backgroundColor: '#000' },
+          backdropStyle,
+        ]}
       />
-      <View style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, pointerEvents: 'none' }}>
+      <View
+        style={{
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          pointerEvents: 'none',
+        }}
+      >
         <LottieView source={config.lottie} autoPlay loop={false} style={{ flex: 1 }} />
       </View>
-      <Pressable style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }} onPress={onClose}>
-        <Animated.View style={[{
-          backgroundColor: config.bg, borderRadius: 24, padding: 36, alignItems: 'center', width: 280,
-          shadowColor: '#000', shadowOffset: { width: 0, height: 8 }, shadowOpacity: 0.15, shadowRadius: 16, elevation: 10,
-        }, cardStyle]}>
+      <Pressable
+        style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}
+        onPress={onClose}
+      >
+        <Animated.View
+          style={[
+            {
+              backgroundColor: config.bg,
+              borderRadius: 24,
+              padding: 36,
+              alignItems: 'center',
+              width: 280,
+              shadowColor: '#000',
+              shadowOffset: { width: 0, height: 8 },
+              shadowOpacity: 0.15,
+              shadowRadius: 16,
+              elevation: 10,
+            },
+            cardStyle,
+          ]}
+        >
           <Text style={{ fontSize: 72, marginBottom: 8 }}>{config.emoji}</Text>
-          <Text style={{ fontSize: 24, fontWeight: '800', color: config.color, marginBottom: 8 }}>{config.title}</Text>
-          <Text style={{ fontSize: 15, color: '#374151', textAlign: 'center', lineHeight: 22 }}>{config.message}</Text>
+          <Text style={{ fontSize: 24, fontWeight: '800', color: config.color, marginBottom: 8 }}>
+            {config.title}
+          </Text>
+          <Text style={{ fontSize: 15, color: '#374151', textAlign: 'center', lineHeight: 22 }}>
+            {config.message}
+          </Text>
           <Text style={{ fontSize: 12, color: '#9ca3af', marginTop: 20 }}>タップで閉じる</Text>
         </Animated.View>
       </Pressable>

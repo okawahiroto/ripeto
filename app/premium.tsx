@@ -59,7 +59,10 @@ export default function PremiumScreen() {
   }
 
   return (
-    <ScrollView style={{ flex: 1, backgroundColor: '#f9fafb' }} contentContainerStyle={{ padding: 24 }}>
+    <ScrollView
+      style={{ flex: 1, backgroundColor: '#f9fafb' }}
+      contentContainerStyle={{ padding: 24 }}
+    >
       {/* ヘッダー */}
       <View style={{ alignItems: 'center', marginBottom: 32 }}>
         <Text style={{ fontSize: 48, marginBottom: 12 }}>⭐</Text>
@@ -72,7 +75,15 @@ export default function PremiumScreen() {
       </View>
 
       {/* 特典リスト */}
-      <View style={{ backgroundColor: '#fff', borderRadius: 16, padding: 20, marginBottom: 24, gap: 14 }}>
+      <View
+        style={{
+          backgroundColor: '#fff',
+          borderRadius: 16,
+          padding: 20,
+          marginBottom: 24,
+          gap: 14,
+        }}
+      >
         {[
           { icon: '🚫', text: '広告を完全非表示' },
           { icon: '🎵', text: '練習に集中できる環境' },
@@ -87,7 +98,14 @@ export default function PremiumScreen() {
       </View>
 
       {isPremium ? (
-        <View style={{ backgroundColor: '#d1fae5', borderRadius: 16, padding: 20, alignItems: 'center' }}>
+        <View
+          style={{
+            backgroundColor: '#d1fae5',
+            borderRadius: 16,
+            padding: 20,
+            alignItems: 'center',
+          }}
+        >
           <Text style={{ fontSize: 20 }}>✅</Text>
           <Text style={{ fontSize: 16, fontWeight: '700', color: '#065f46', marginTop: 8 }}>
             プレミアム有効中
@@ -97,7 +115,13 @@ export default function PremiumScreen() {
         <>
           {/* 購入ボタン */}
           <Pressable
-            style={{ backgroundColor: loading ? '#93c5fd' : '#3b82f6', borderRadius: 14, padding: 18, alignItems: 'center', marginBottom: 12 }}
+            style={{
+              backgroundColor: loading ? '#93c5fd' : '#3b82f6',
+              borderRadius: 14,
+              padding: 18,
+              alignItems: 'center',
+              marginBottom: 12,
+            }}
             onPress={handlePurchase}
             disabled={loading}
           >

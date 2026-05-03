@@ -1,5 +1,11 @@
 import { View, Text } from 'react-native';
-import Animated, { useSharedValue, useAnimatedStyle, withSpring, withSequence, withTiming } from 'react-native-reanimated';
+import Animated, {
+  useSharedValue,
+  useAnimatedStyle,
+  withSpring,
+  withSequence,
+  withTiming,
+} from 'react-native-reanimated';
 import { useEffect } from 'react';
 import { getStarLevel } from '@/src/types/models';
 
@@ -38,10 +44,16 @@ export function StarBadge({ count, size = 'small', animate = false }: StarBadgeP
   if (size === 'large') {
     return (
       <View style={{ alignItems: 'center' }}>
-        <Animated.Text style={[{ fontSize: 72 }, animatedStyle]}>
-          {config.emoji}
-        </Animated.Text>
-        <View style={{ backgroundColor: config.bg, paddingHorizontal: 12, paddingVertical: 4, borderRadius: 99, marginTop: 8 }}>
+        <Animated.Text style={[{ fontSize: 72 }, animatedStyle]}>{config.emoji}</Animated.Text>
+        <View
+          style={{
+            backgroundColor: config.bg,
+            paddingHorizontal: 12,
+            paddingVertical: 4,
+            borderRadius: 99,
+            marginTop: 8,
+          }}
+        >
           <Text style={{ fontSize: 13, fontWeight: '600', color: config.color }}>
             {config.label}
           </Text>
@@ -50,11 +62,7 @@ export function StarBadge({ count, size = 'small', animate = false }: StarBadgeP
     );
   }
 
-  return (
-    <Animated.Text style={[{ fontSize: 28 }, animatedStyle]}>
-      {config.emoji}
-    </Animated.Text>
-  );
+  return <Animated.Text style={[{ fontSize: 28 }, animatedStyle]}>{config.emoji}</Animated.Text>;
 }
 
 /** 練習回数に応じた段階テキストを返す */

@@ -10,7 +10,9 @@ export function getBannerAdUnitId(): string {
   if (Platform.OS === 'ios') {
     return (Constants.expoConfig?.extra?.admobBannerIos as string | undefined) ?? TEST_BANNER_IOS;
   }
-  return (Constants.expoConfig?.extra?.admobBannerAndroid as string | undefined) ?? TEST_BANNER_ANDROID;
+  return (
+    (Constants.expoConfig?.extra?.admobBannerAndroid as string | undefined) ?? TEST_BANNER_ANDROID
+  );
 }
 
 export async function initializeAdMob(): Promise<void> {

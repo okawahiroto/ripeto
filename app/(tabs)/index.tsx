@@ -23,22 +23,52 @@ function GoalCard({ goal, onComplete }: { goal: Goal; onComplete: (id: string) =
 
   return (
     <Pressable
-      style={{ backgroundColor: '#fff', borderRadius: 16, padding: 16, marginBottom: 12, borderWidth: 1, borderColor: '#f3f4f6' }}
+      style={{
+        backgroundColor: '#fff',
+        borderRadius: 16,
+        padding: 16,
+        marginBottom: 12,
+        borderWidth: 1,
+        borderColor: '#f3f4f6',
+      }}
       onPress={() => router.push(`/goals/${goal.id}` as Href)}
     >
-      <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'flex-start' }}>
-        <Text style={{ fontSize: 17, fontWeight: '600', color: '#1f2937', flex: 1, marginRight: 8 }} numberOfLines={1}>
+      <View
+        style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'flex-start' }}
+      >
+        <Text
+          style={{ fontSize: 17, fontWeight: '600', color: '#1f2937', flex: 1, marginRight: 8 }}
+          numberOfLines={1}
+        >
           {goal.title}
         </Text>
-        <View style={{ backgroundColor: daysBg, paddingHorizontal: 8, paddingVertical: 3, borderRadius: 99 }}>
+        <View
+          style={{
+            backgroundColor: daysBg,
+            paddingHorizontal: 8,
+            paddingVertical: 3,
+            borderRadius: 99,
+          }}
+        >
           <Text style={{ fontSize: 12, fontWeight: '700', color: daysColor }}>{daysLabel}</Text>
         </View>
       </View>
       <Text style={{ fontSize: 13, color: '#9ca3af', marginTop: 4 }}>
-        {goal.eventDate.toLocaleDateString('ja-JP', { year: 'numeric', month: 'long', day: 'numeric' })}
+        {goal.eventDate.toLocaleDateString('ja-JP', {
+          year: 'numeric',
+          month: 'long',
+          day: 'numeric',
+        })}
       </Text>
       <Pressable
-        style={{ marginTop: 10, alignSelf: 'flex-start', backgroundColor: '#f3f4f6', paddingHorizontal: 12, paddingVertical: 4, borderRadius: 99 }}
+        style={{
+          marginTop: 10,
+          alignSelf: 'flex-start',
+          backgroundColor: '#f3f4f6',
+          paddingHorizontal: 12,
+          paddingVertical: 4,
+          borderRadius: 99,
+        }}
         onPress={() =>
           Alert.alert('完了にする', `「${goal.title}」を完了にしますか？`, [
             { text: 'キャンセル', style: 'cancel' },
@@ -65,7 +95,10 @@ export default function GoalsScreen() {
       if (!auth.currentUser) {
         await new Promise<void>((resolve) => {
           const unsub = auth.onAuthStateChanged((user) => {
-            if (user) { unsub(); resolve(); }
+            if (user) {
+              unsub();
+              resolve();
+            }
           });
         });
       }
@@ -91,7 +124,14 @@ export default function GoalsScreen() {
 
   if (loading) {
     return (
-      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: '#f9fafb' }}>
+      <View
+        style={{
+          flex: 1,
+          justifyContent: 'center',
+          alignItems: 'center',
+          backgroundColor: '#f9fafb',
+        }}
+      >
         <ActivityIndicator size="large" color="#3b82f6" />
       </View>
     );
@@ -107,14 +147,26 @@ export default function GoalsScreen() {
         ListEmptyComponent={
           <View style={{ alignItems: 'center', marginTop: 80 }}>
             <Text style={{ fontSize: 16, color: '#9ca3af' }}>ゴールがまだありません</Text>
-            <Text style={{ fontSize: 14, color: '#9ca3af', marginTop: 4 }}>＋ボタンから追加してください</Text>
+            <Text style={{ fontSize: 14, color: '#9ca3af', marginTop: 4 }}>
+              ＋ボタンから追加してください
+            </Text>
           </View>
         }
       />
       {/* バナー広告（下部固定） */}
       <AdBanner fixed />
       <Pressable
-        style={{ position: 'absolute', bottom: 70, right: 24, backgroundColor: '#3b82f6', width: 56, height: 56, borderRadius: 28, alignItems: 'center', justifyContent: 'center' }}
+        style={{
+          position: 'absolute',
+          bottom: 70,
+          right: 24,
+          backgroundColor: '#3b82f6',
+          width: 56,
+          height: 56,
+          borderRadius: 28,
+          alignItems: 'center',
+          justifyContent: 'center',
+        }}
         onPress={() => router.push('/goals/new' as Href)}
       >
         <Text style={{ color: '#fff', fontSize: 32, lineHeight: 36 }}>+</Text>

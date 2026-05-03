@@ -1,5 +1,13 @@
 import { useState } from 'react';
-import { View, Text, TextInput, Pressable, ActivityIndicator, Alert, ScrollView } from 'react-native';
+import {
+  View,
+  Text,
+  TextInput,
+  Pressable,
+  ActivityIndicator,
+  Alert,
+  ScrollView,
+} from 'react-native';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import { createPiece } from '@/src/features/pieces/api';
 
@@ -27,7 +35,10 @@ export default function NewPieceScreen() {
   }
 
   return (
-    <ScrollView style={{ flex: 1, backgroundColor: '#f9fafb' }} contentContainerStyle={{ padding: 20 }}>
+    <ScrollView
+      style={{ flex: 1, backgroundColor: '#f9fafb' }}
+      contentContainerStyle={{ padding: 20 }}
+    >
       <Text style={{ fontSize: 22, fontWeight: '700', color: '#1f2937', marginBottom: 24 }}>
         曲目を追加
       </Text>
@@ -36,7 +47,17 @@ export default function NewPieceScreen() {
         曲名
       </Text>
       <TextInput
-        style={{ backgroundColor: '#fff', borderWidth: 1, borderColor: '#e5e7eb', borderRadius: 10, paddingHorizontal: 14, paddingVertical: 12, fontSize: 16, color: '#1f2937', marginBottom: 32 }}
+        style={{
+          backgroundColor: '#fff',
+          borderWidth: 1,
+          borderColor: '#e5e7eb',
+          borderRadius: 10,
+          paddingHorizontal: 14,
+          paddingVertical: 12,
+          fontSize: 16,
+          color: '#1f2937',
+          marginBottom: 32,
+        }}
         placeholder="例: ショパン バラード第1番"
         placeholderTextColor="#9ca3af"
         value={title}
@@ -46,7 +67,12 @@ export default function NewPieceScreen() {
       />
 
       <Pressable
-        style={{ backgroundColor: loading ? '#93c5fd' : '#3b82f6', borderRadius: 12, paddingVertical: 14, alignItems: 'center' }}
+        style={{
+          backgroundColor: loading ? '#93c5fd' : '#3b82f6',
+          borderRadius: 12,
+          paddingVertical: 14,
+          alignItems: 'center',
+        }}
         onPress={handleSave}
         disabled={loading}
       >

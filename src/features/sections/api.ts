@@ -25,7 +25,12 @@ function sectionDoc(goalId: string, pieceId: string, sectionId: string) {
   return doc(db, 'users', uid, 'goals', goalId, 'pieces', pieceId, 'sections', sectionId);
 }
 
-function toSection(id: string, data: Record<string, unknown>, pieceId: string, goalId: string): Section {
+function toSection(
+  id: string,
+  data: Record<string, unknown>,
+  pieceId: string,
+  goalId: string
+): Section {
   return {
     id,
     pieceId,
@@ -36,7 +41,11 @@ function toSection(id: string, data: Record<string, unknown>, pieceId: string, g
   };
 }
 
-export async function createSection(goalId: string, pieceId: string, title: string): Promise<Section> {
+export async function createSection(
+  goalId: string,
+  pieceId: string,
+  title: string
+): Promise<Section> {
   const ref = await addDoc(sectionsCol(goalId, pieceId), {
     title,
     practiceCount: 0,
@@ -48,16 +57,26 @@ export async function createSection(goalId: string, pieceId: string, title: stri
 export async function fetchSections(goalId: string, pieceId: string): Promise<Section[]> {
   const q = query(sectionsCol(goalId, pieceId), orderBy('createdAt', 'asc'));
   const snap = await getDocs(q);
-  return snap.docs.map((d) => toSection(d.id, d.data() as Record<string, unknown>, pieceId, goalId));
+  return snap.docs.map((d) =>
+    toSection(d.id, d.data() as Record<string, unknown>, pieceId, goalId)
+  );
 }
 
 /** practiceCount を1増やす（ログ追加と同時に呼ぶ） */
-export async function incrementPracticeCount(goalId: string, pieceId: string, sectionId: string): Promise<void> {
+export async function incrementPracticeCount(
+  goalId: string,
+  pieceId: string,
+  sectionId: string
+): Promise<void> {
   await updateDoc(sectionDoc(goalId, pieceId, sectionId), {
     practiceCount: increment(1),
   });
 }
 
-export async function deleteSection(goalId: string, pieceId: string, sectionId: string): Promise<void> {
+export async function deleteSection(
+  goalId: string,
+  pieceId: string,
+  sectionId: string
+): Promise<void> {
   await deleteDoc(sectionDoc(goalId, pieceId, sectionId));
 }

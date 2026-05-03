@@ -20,7 +20,13 @@ export function AdBanner({ fixed = false }: BannerAdBannerProps) {
   const adUnitId = __DEV__ ? TestIds.BANNER : getBannerAdUnitId();
 
   return (
-    <View style={fixed ? { position: 'absolute', bottom: 0, left: 0, right: 0, alignItems: 'center' } : { alignItems: 'center' }}>
+    <View
+      style={
+        fixed
+          ? { position: 'absolute', bottom: 0, left: 0, right: 0, alignItems: 'center' }
+          : { alignItems: 'center' }
+      }
+    >
       <BannerAd
         unitId={adUnitId}
         size={BannerAdSize.BANNER}

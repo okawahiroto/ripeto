@@ -1,5 +1,14 @@
 import { useState } from 'react';
-import { View, Text, TextInput, Pressable, ActivityIndicator, Alert, ScrollView, Platform } from 'react-native';
+import {
+  View,
+  Text,
+  TextInput,
+  Pressable,
+  ActivityIndicator,
+  Alert,
+  ScrollView,
+  Platform,
+} from 'react-native';
 import { useRouter } from 'expo-router';
 import { createGoal } from '@/src/features/goals/api';
 
@@ -54,7 +63,10 @@ export default function NewGoalScreen() {
   }
 
   return (
-    <ScrollView style={{ flex: 1, backgroundColor: '#f9fafb' }} contentContainerStyle={{ padding: 20 }}>
+    <ScrollView
+      style={{ flex: 1, backgroundColor: '#f9fafb' }}
+      contentContainerStyle={{ padding: 20 }}
+    >
       <Text style={{ fontSize: 22, fontWeight: '700', color: '#1f2937', marginBottom: 24 }}>
         ゴールを追加
       </Text>
@@ -63,7 +75,17 @@ export default function NewGoalScreen() {
         タイトル
       </Text>
       <TextInput
-        style={{ backgroundColor: '#fff', borderWidth: 1, borderColor: '#e5e7eb', borderRadius: 10, paddingHorizontal: 14, paddingVertical: 12, fontSize: 16, color: '#1f2937', marginBottom: 20 }}
+        style={{
+          backgroundColor: '#fff',
+          borderWidth: 1,
+          borderColor: '#e5e7eb',
+          borderRadius: 10,
+          paddingHorizontal: 14,
+          paddingVertical: 12,
+          fontSize: 16,
+          color: '#1f2937',
+          marginBottom: 20,
+        }}
         placeholder="例: 春の発表会、JASTA コンクール"
         placeholderTextColor="#9ca3af"
         value={title}
@@ -75,7 +97,17 @@ export default function NewGoalScreen() {
         本番日
       </Text>
       <TextInput
-        style={{ backgroundColor: '#fff', borderWidth: 1, borderColor: '#e5e7eb', borderRadius: 10, paddingHorizontal: 14, paddingVertical: 12, fontSize: 16, color: '#1f2937', marginBottom: 32 }}
+        style={{
+          backgroundColor: '#fff',
+          borderWidth: 1,
+          borderColor: '#e5e7eb',
+          borderRadius: 10,
+          paddingHorizontal: 14,
+          paddingVertical: 12,
+          fontSize: 16,
+          color: '#1f2937',
+          marginBottom: 32,
+        }}
         placeholder="例: 2026/08/01"
         placeholderTextColor="#9ca3af"
         value={dateText}
@@ -85,7 +117,12 @@ export default function NewGoalScreen() {
       />
 
       <Pressable
-        style={{ backgroundColor: loading ? '#93c5fd' : '#3b82f6', borderRadius: 12, paddingVertical: 14, alignItems: 'center' }}
+        style={{
+          backgroundColor: loading ? '#93c5fd' : '#3b82f6',
+          borderRadius: 12,
+          paddingVertical: 14,
+          alignItems: 'center',
+        }}
         onPress={handleSave}
         disabled={loading}
       >

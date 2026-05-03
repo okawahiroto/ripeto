@@ -9,7 +9,14 @@ function PieceCard({ piece }: { piece: Piece }) {
   const router = useRouter();
   return (
     <Pressable
-      style={{ backgroundColor: '#fff', borderRadius: 14, padding: 16, marginBottom: 10, borderWidth: 1, borderColor: '#f3f4f6' }}
+      style={{
+        backgroundColor: '#fff',
+        borderRadius: 14,
+        padding: 16,
+        marginBottom: 10,
+        borderWidth: 1,
+        borderColor: '#f3f4f6',
+      }}
       onPress={() => router.push(`/goals/${piece.goalId}/pieces/${piece.id}` as Href)}
     >
       <Text style={{ fontSize: 16, fontWeight: '500', color: '#1f2937' }}>{piece.title}</Text>
@@ -43,7 +50,14 @@ export default function GoalDetailScreen() {
 
   if (loading) {
     return (
-      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: '#f9fafb' }}>
+      <View
+        style={{
+          flex: 1,
+          justifyContent: 'center',
+          alignItems: 'center',
+          backgroundColor: '#f9fafb',
+        }}
+      >
         <ActivityIndicator size="large" color="#3b82f6" />
       </View>
     );
@@ -59,12 +73,24 @@ export default function GoalDetailScreen() {
         ListEmptyComponent={
           <View style={{ alignItems: 'center', marginTop: 80 }}>
             <Text style={{ fontSize: 16, color: '#9ca3af' }}>曲目がまだありません</Text>
-            <Text style={{ fontSize: 14, color: '#9ca3af', marginTop: 4 }}>＋ボタンから追加してください</Text>
+            <Text style={{ fontSize: 14, color: '#9ca3af', marginTop: 4 }}>
+              ＋ボタンから追加してください
+            </Text>
           </View>
         }
       />
       <Pressable
-        style={{ position: 'absolute', bottom: 24, right: 24, backgroundColor: '#3b82f6', width: 56, height: 56, borderRadius: 28, alignItems: 'center', justifyContent: 'center' }}
+        style={{
+          position: 'absolute',
+          bottom: 24,
+          right: 24,
+          backgroundColor: '#3b82f6',
+          width: 56,
+          height: 56,
+          borderRadius: 28,
+          alignItems: 'center',
+          justifyContent: 'center',
+        }}
         onPress={() => router.push(`/goals/${goalId}/pieces/new` as Href)}
       >
         <Text style={{ color: '#fff', fontSize: 32, lineHeight: 36 }}>+</Text>
