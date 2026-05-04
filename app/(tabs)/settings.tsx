@@ -1,10 +1,8 @@
-import { View, Text, ScrollView, Pressable, Alert, Platform } from 'react-native';
+import { View, Text, ScrollView, Pressable } from 'react-native';
 import { useRouter } from 'expo-router';
 import type { Href } from 'expo-router';
 import { useAuthStore } from '@/src/stores/authStore';
 import { usePurchaseStore } from '@/src/stores/purchaseStore';
-import { useGoogleAuth } from '@/src/features/auth/useGoogleAuth';
-import { useAppleAuth } from '@/src/features/auth/useAppleAuth';
 import Constants from 'expo-constants';
 
 function Row({
@@ -79,29 +77,9 @@ function SettingsScreen() {
   const status = useAuthStore((s) => s.status);
   const user = useAuthStore((s) => s.user);
   const isPremium = usePurchaseStore((s) => s.isPremium);
-  const { promptAsync: promptGoogle, isAvailable: isGoogleAvailable } = useGoogleAuth();
-  const { signInWithApple, isAvailable: isAppleAvailable } = useAppleAuth();
 
-  const isLinked = status === 'linked';
   const version = (Constants.expoConfig?.version ?? '1.0.0') as string;
-
-  async function handleGoogleLink() {
-    try {
-      await promptGoogle();
-    } catch {
-      Alert.alert('エラー', 'Googleアカウントの連携に失敗しました。');
-    }
-  }
-
-  async function handleAppleLink() {
-    try {
-      await signInWithApple();
-    } catch {
-      Alert.alert('エラー', 'Appleアカウントの連携に失敗しました。');
-    }
-  }
-
-  const accountLabel = isLinked ? (user?.email ?? '連携済み') : '未連携（匿名）';
+  const accountLabel = status === 'linked' ? (user?.email ?? '連携済み') : '匿名ユーザー';
 
   return (
     <ScrollView
@@ -119,22 +97,6 @@ function SettingsScreen() {
       {/* アカウント */}
       <SectionGroup title="アカウント">
         <Row label="ステータス" value={accountLabel} chevron={false} />
-        {!isLinked && (
-          <>
-            {isGoogleAvailable && (
-              <>
-                <Divider />
-                <Row label="Googleアカウントで引き継ぐ" onPress={handleGoogleLink} />
-              </>
-            )}
-            {isAppleAvailable && Platform.OS === 'ios' && (
-              <>
-                <Divider />
-                <Row label="Appleアカウントで引き継ぐ" onPress={handleAppleLink} />
-              </>
-            )}
-          </>
-        )}
       </SectionGroup>
 
       {/* 法的情報 */}
