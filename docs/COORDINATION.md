@@ -4,17 +4,29 @@
 
 ## 現在のフェーズ
 
-**Phase 7: リリース準備（iOS 審査中）**
-Phase 1〜6 および Phase 7 の準備作業はすべて完了。iOS 審査結果待ち。
+**v1.0 リリース済み（iOS App Store 公開中）**
+2026-05-17 に iOS 審査承認。App Store 公開済み。
 
 ## 次にやること
 
-1. iOS 審査結果を待つ（24〜48時間）
-2. 承認後 → App Store 公開・Android 製品版プロモート
-3. App内課金（ripeto_premium）の動作確認（Sandbox テスト）
-4. Android サービスアカウント設定（Google Play Console の API アクセスが解放され次第）
+1. App内課金（ripeto_premium）の動作確認（Sandbox テスト）
+2. Android 製品版プロモート（Play Console で内部テスト → 製品版へ昇格）
+3. Android サービスアカウント設定（Google Play Console の API アクセスが解放され次第）
+4. App Store レビュー・ダウンロード状況のモニタリング（App Analytics）
 
 ## 直近の作業ログ
+
+### 2026-05-07（iOS App Store 承認・v1.0 公開）
+- App Review より承認メール受領
+- v1.0 App Store 公開完了（人生初のiOSアプリリリース）
+
+### 2026-05-05（iOS 審査リジェクト対応・再提出）
+- 審査リジェクト理由：Apple サインイン時にエラーが発生（Guideline 2.1a）
+- 対応方針：Apple/Google サインイン UI を v1.0 から削除（v1.1 で再実装予定）
+  - 理由：Googleログインを残す場合 Apple ログインも必須（Guideline 4.8）のため両方削除
+  - `useAppleAuth.ts` / `useGoogleAuth.ts` はコードとして保持（資産として残す）
+- `app/(tabs)/settings.tsx` からアカウント連携 UI を削除
+- EAS Build（ビルド番号5）→ EAS Submit で再提出完了
 
 ### 2026-05-01（Phase 7 完了・iOS 審査提出）
 - プライバシーポリシー（app/legal/privacy.tsx）・利用規約（app/legal/terms.tsx）作成
