@@ -1,5 +1,15 @@
 # Changelog
 
+## 2026-05-17 — ゴールの編集・削除機能追加（Issue #1・#2）
+
+### 実装内容
+- `app/goals/[goalId]/edit.tsx` 新規作成：タイトル・本番日を編集できる画面
+- `src/features/goals/api.ts` に `fetchGoal` / `updateGoal` / `deleteGoal` を追加
+- ゴール一覧カード（`app/(tabs)/index.tsx`）に編集・削除・完了ボタンを追加
+- Web（localhost）で `Alert.alert()` が動作しない問題を修正（`Platform.OS === 'web'` で `window.confirm()` にフォールバック）
+
+---
+
 ## 2026-05-17 — ドキュメント整備・改善管理フロー構築
 
 ### ドキュメント

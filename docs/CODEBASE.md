@@ -41,6 +41,7 @@ ripeto/
 │   │   ├── new.tsx          ゴール作成モーダル（タイトル・本番日を入力）
 │   │   └── [goalId]/
 │   │       ├── index.tsx    曲目一覧画面
+│   │       ├── edit.tsx     ゴール編集画面（タイトル・本番日を編集）
 │   │       └── pieces/
 │   │           ├── new.tsx  曲目作成モーダル
 │   │           └── [pieceId]/
@@ -246,6 +247,16 @@ ripeto/
 
 ---
 
+### ゴール編集（`app/goals/[goalId]/edit.tsx`）
+
+既存ゴールのタイトル・本番日を編集する画面。
+
+- 画面表示時に `fetchGoal()` で現在値を取得してフォームに初期表示
+- 保存: `updateGoal()` → `router.back()`
+- ゴール一覧の「編集」ボタンから遷移
+
+---
+
 ### 曲目一覧（`app/goals/[goalId]/index.tsx`）
 
 指定ゴール配下の曲目を一覧表示。
@@ -303,9 +314,10 @@ RevenueCat 経由の買い切り課金画面。広告非表示の購入・復元
 |---|---|
 | `createGoal(title, eventDate)` | ゴールを Firestore に追加 |
 | `fetchActiveGoals()` | `status=active` のゴールを `eventDate` 昇順で取得 |
+| `fetchGoal(goalId)` | 単一ゴールを取得（編集画面の初期値読み込みで使用） |
+| `updateGoal(goalId, title, eventDate)` | タイトル・本番日を更新 |
+| `deleteGoal(goalId)` | ゴールを削除 |
 | `completeGoal(goalId)` | `status` を `completed` に更新 |
-| ~~`updateGoal`~~ | **未実装**（Issue #1） |
-| ~~`deleteGoal`~~ | **未実装**（Issue #2） |
 
 ### `pieces/api.ts`
 
