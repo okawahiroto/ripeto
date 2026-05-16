@@ -1,5 +1,50 @@
 # Changelog
 
+## 2026-05-07 — v1.0 iOS App Store 承認・公開
+
+### リリース
+- App Review より承認メール受領、App Store 公開完了
+- 人生初の iOS アプリリリース
+
+---
+
+## 2026-05-05 — iOS 審査リジェクト対応・再提出
+
+### リジェクト理由
+- Guideline 2.1a: Apple サインイン時にエラーが発生
+
+### 対応内容
+- Apple/Google サインイン UI を v1.0 から削除（v1.1 で再実装予定）
+  - Google ログインを残す場合、Apple ログインも必須（Guideline 4.8）のため両方削除
+  - `useAppleAuth.ts` / `useGoogleAuth.ts` はコードとして保持
+- `app/(tabs)/settings.tsx` からアカウント連携 UI を削除
+- `style: コードフォーマット整形` を実施
+- EAS Build（ビルド番号5）→ EAS Submit で再提出完了
+
+---
+
+## 2026-05-01 — Phase 7: iOS 審査提出・Android 内部テスト公開
+
+### 実施内容
+- プライバシーポリシー（`app/legal/privacy.tsx`）・利用規約（`app/legal/terms.tsx`）作成
+- 設定タブ（`app/(tabs)/settings.tsx`）追加: プレミアム導線・アカウント連携・法的情報・バージョン表示
+- ストアリスティング原稿作成（`docs/STORE_LISTING.md`）
+- EAS Metadata 設定ファイル作成（`store.config.json`）
+- GitHub リポジトリ作成・公開（https://github.com/okawahiroto/ripeto）
+- GitHub Pages でプライバシーポリシー・利用規約をホスティング（`docs/privacy.html`, `docs/terms.html`）
+- LICENSE 追加（All Rights Reserved）
+- Apple Developer Program・Google Play Console 登録完了
+- `eas.json` に `ascAppId`（6763823548）・`appleTeamId`（8J55C67JWN）を追記
+- RevenueCat Android アプリ追加・`REVENUECAT_API_KEY_ANDROID` を EAS 環境変数に登録
+- iOS スクリーンショット撮影（1284×2778px / iPhone 17 Pro Max）
+- iPad スクリーンショット撮影（2064×2752px / iPad Pro 13インチ M5）
+- `app.config.ts` に `ITSAppUsesNonExemptEncryption: false` を追加（輸出コンプライアンス自動化）
+- EAS Build でプロダクションビルド作成（iOS・Android）
+- iOS: EAS Submit で App Store Connect に提出 → 審査提出完了
+- Android: Play Console に AAB を手動アップロード → 内部テスト公開
+
+---
+
 ## 2026-05-01 — アプリアイコン・スプラッシュ画面
 
 ### デザイン
