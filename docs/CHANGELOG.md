@@ -1,5 +1,24 @@
 # Changelog
 
+## 2026-05-17 — ドキュメント整備・改善管理フロー構築
+
+### ドキュメント
+- `docs/CODEBASE.md` 新規作成：コードベース全体のディレクトリ構成・各ファイルの役割・画面詳細・API層・コンポーネント・ストア・lib を網羅した仕様書
+- `docs/IMPROVEMENTS.md` 新規作成：GitHub Issues 化前の改善案一時置き場
+- `docs/COORDINATION.md` 更新：v1.0 リリース完了・次のステップを反映
+- `docs/CHANGELOG.md` 更新：5/1〜5/7 の作業ログ（Phase 7完了・審査リジェクト対応・v1.0公開）を追記
+- Android スクリーンショット5枚（`screenshots/android/`）を追加
+
+### 改善管理フロー
+- 改善案は `docs/IMPROVEMENTS.md` に書き溜め、GitHub Issues で管理する方針を確立
+- GitHub Issues を作成（`gh issue create` コマンド経由）
+  - [#1](https://github.com/okawahiroto/ripeto/issues/1) ゴールの編集機能追加
+  - [#2](https://github.com/okawahiroto/ripeto/issues/2) ゴールの削除機能追加
+  - [#3](https://github.com/okawahiroto/ripeto/issues/3) ゴール追加ボタンの改善
+- ブランチ戦略を確立：`main` は常にリリース可能な状態を維持、機能改善は `feature/xxx` ブランチで開発
+
+---
+
 ## 2026-05-07 — v1.0 iOS App Store 承認・公開
 
 ### リリース
