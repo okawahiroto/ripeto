@@ -2,7 +2,9 @@ import {
   collection,
   doc,
   addDoc,
+  getDoc,
   updateDoc,
+  deleteDoc,
   getDocs,
   query,
   orderBy,
@@ -51,6 +53,29 @@ export async function fetchActiveGoals(): Promise<Goal[]> {
   return snap.docs
     .map((d) => toGoal(d.id, d.data() as Record<string, unknown>))
     .filter((g) => g.status === 'active');
+}
+
+export async function fetchGoal(goalId: string): Promise<Goal> {
+  const uid = auth.currentUser?.uid;
+  if (!uid) throw new Error('未認証');
+  const snap = await getDoc(doc(db, 'users', uid, 'goals', goalId));
+  if (!snap.exists()) throw new Error('ゴールが見つかりません');
+  return toGoal(snap.id, snap.data() as Record<string, unknown>);
+}
+
+export async function updateGoal(goalId: string, title: string, eventDate: Date): Promise<void> {
+  const uid = auth.currentUser?.uid;
+  if (!uid) throw new Error('未認証');
+  await updateDoc(doc(db, 'users', uid, 'goals', goalId), {
+    title,
+    eventDate: Timestamp.fromDate(eventDate),
+  });
+}
+
+export async function deleteGoal(goalId: string): Promise<void> {
+  const uid = auth.currentUser?.uid;
+  if (!uid) throw new Error('未認証');
+  await deleteDoc(doc(db, 'users', uid, 'goals', goalId));
 }
 
 export async function completeGoal(goalId: string): Promise<void> {
