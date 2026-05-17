@@ -1,5 +1,18 @@
 # Changelog
 
+## 2026-05-17 — ドキュメント整備・GitHub Issues 整理
+
+### ドキュメント
+- `docs/CODEBASE.md` にデータモデル（旧 DATA_MODEL.md の内容）を統合
+- `docs/IMPROVEMENTS.md` を削除（GitHub Issues に一元化）
+- `docs/ROADMAP.md` を最新化：v1.0 全フェーズをチェック済みに更新、v1.1・v1.2 セクションを整理
+- `docs/COORDINATION.md` をスリム化：直近の作業と次にやることだけに絞る
+
+### GitHub Issues
+- Issue #4〜#15 を新規作成（認証再実装・各種編集削除・ナビゲーション改善・ダッシュボード改善など）
+
+---
+
 ## 2026-05-17 — ゴールの編集・削除機能追加（Issue #1・#2）
 
 ### 実装内容
